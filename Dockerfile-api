@@ -1,0 +1,77 @@
+FROM composer:2 AS composer
+FROM ghcr.io/roadrunner-server/roadrunner:2023.2 AS roadrunner
+FROM php:8.2-cli-alpine
+
+COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN apk add --update --no-cache \
+        coreutils \
+        openssl-dev \
+        gnupg \
+        curl \
+        wget \
+        dos2unix \
+        libzip-dev && \
+    apk add --update --no-cache --virtual buildDeps \
+        autoconf \
+        gcc \
+        make \
+        libxml2-dev \
+        curl \
+        tzdata \
+        curl-dev \
+        oniguruma-dev \
+        g++ && \
+    docker-php-ext-install ftp && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    sync && \
+    install-php-extensions redis-stable \
+        mysqli-stable \
+        pdo_mysql-stable \
+        zip-stable \
+        pcntl-stable \
+        bcmath-stable \
+        calendar-stable \
+        exif-stable \
+        gettext-stable \
+        gmp-stable \
+        intl-stable \
+        odbc-stable \
+        pdo_odbc-stable \
+        pdo_pgsql-stable \
+        pgsql-stable \
+        shmop-stable \
+        soap-stable \
+        sockets-stable \
+        sysvmsg-stable \
+        sysvsem-stable \
+        sysvshm-stable \
+        tidy-stable \
+        xsl-stable \
+        opcache-stable \
+        amqp-stable && \
+    ln -s /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
+    rm /usr/local/bin/install-php-extensions && \
+    apk del buildDeps && \
+    chmod +x /usr/local/bin/rr && \
+    chmod +x /usr/bin/composer
+
+
+ADD composer.json /app/composer.json
+ADD composer.lock /app/composer.lock
+ADD api/ app/api/
+ADD .rr.yaml /app/.rr.yaml
+
+WORKDIR /app
+
+RUN composer install --no-dev --working-dir="/app" && \
+    chown -R www-data:www-data /app
+
+STOPSIGNAL SIGTERM
+
+CMD /usr/local/bin/rr --config="/app/.rr.yaml" serve
+
+#HEALTHCHECK --start-period=30s --interval=5s --timeout=5s --retries=3 CMD /usr/local/bin/healthcheck

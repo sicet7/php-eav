@@ -1,0 +1,54 @@
+version: "3"
+
+rpc:
+    listen: tcp://127.0.0.1:6001
+
+server:
+    command: "php ./api/http_worker.php"
+    relay: "tcp://127.0.0.1:7000"
+    on_init:
+        command: "php ./api/init.php"
+    env:
+        - XDEBUG_SESSION: ${RR_XDEBUG:-0}
+
+http:
+    address: "${RR_HTTP_ADDR:-0.0.0.0}:${RR_HTTP_PORT:-8080}"
+    pool:
+        num_workers: ${RR_NUM_WORKERS:-2}
+        max_jobs: ${RR_MAX_JOBS:-250}
+        debug: ${RR_DEBUG:-false}
+    access_logs: false
+    max_request_size: 256
+    middleware: [ "headers", "gzip" ]
+
+    uploads:
+        dir: "./var/uploads"
+
+    headers:
+        cors:
+            allowed_origin: "${RR_CORS_ORIGIN:-*}"
+            allowed_headers: "${RR_CORS_HEADERS:-*}"
+            allowed_methods: "${RR_CORS_METHODS:-*}"
+            allow_credentials: "${RR_CORS_CREDENTIALS:-true}"
+            exposed_headers: "Cache-Control,Content-Language,Content-Type,Expires,Last-Modified,Pragma,http2-push"
+            max_age: 600
+
+        response:
+            X-Powered-By: "${RR_APP_NAME:-Unknown} ${RR_APP_VERSION:-Unknown}"
+
+    http2:
+        h2c: false
+
+status:
+    # Host and port to listen on (eg.: `127.0.0.1:2114`). Use the following URL: http://127.0.0.1:2114/health?plugin=http
+    # Multiple plugins must be separated using "&" - http://127.0.0.1:2114/health?plugin=http&plugin=rpc where "http" and
+    # "rpc" are active (connected) plugins.
+    #
+    # This option is required.
+    address: 127.0.0.1:2114
+
+logs:
+    mode: production
+    level: info
+    encoding: json
+    output: stdout

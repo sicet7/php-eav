@@ -1,0 +1,25 @@
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+.idea/
+
+# Ignore files for PNPM, NPM and YARN
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# PHP Files
+api/
+vendor/
+phpunit.xml
+composer.json
+composer.lock
+.phpstorm.meta.php
+dev.rr.yaml
+prod.rr.yaml
+eav
