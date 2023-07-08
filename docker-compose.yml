@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+    proxy:
+        image: traefik:v2.10
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - services
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - .docker/traefik/traefik.yml:/traefik.yml:ro
+            - .docker/certs:/certs
+            - .docker/traefik/configurations:/configurations
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=services"
+            - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+            - "traefik.http.routers.traefik-secure.rule=Host(`localhost`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+            - "traefik.http.routers.traefik-secure.service=api@internal"
+    api:
+        build:
+            dockerfile: .docker/Dockerfile-api
+            context: .
+        restart: unless-stopped
+        networks:
+            - services
+        depends_on:
+            - cache
+            - database
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "30m"
+                max-file: "3"
+    database:
+        image: mariadb:lts-jammy
+        ports:
+            - "3306:3306"
+        restart: unless-stopped
+        networks:
+            - services
+        volumes:
+            - eav-data:/var/lib/mysql
+        environment:
+            MARIADB_ROOT_PASSWORD: "root"
+            MARIADB_USER: "eav"
+            MARIADB_PASSWORD: "eav"
+            MARIADB_DATABASE: "eav_database"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "30m"
+                max-file: "3"
+    cache:
+        image: redis:6.2-alpine
+        restart: unless-stopped
+        networks:
+            - services
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "30m"
+                max-file: "3"
+
+networks:
+    services:
+        driver: bridge
+
+volumes:
+    eav-data:

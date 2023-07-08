@@ -59,16 +59,7 @@ RUN apk add --update --no-cache \
     chmod +x /usr/local/bin/rr && \
     chmod +x /usr/bin/composer
 
-
-ADD composer.json /app/composer.json
-ADD composer.lock /app/composer.lock
-ADD api/ app/api/
-ADD .rr.yaml /app/.rr.yaml
-
 WORKDIR /app
-
-RUN composer install --no-dev --working-dir="/app" && \
-    chown -R www-data:www-data /app
 
 STOPSIGNAL SIGTERM
 
