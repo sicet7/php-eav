@@ -6,7 +6,7 @@ use DI\Definition\Exception\InvalidDefinition;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Roave\BetterReflection\Reflection\Attribute\ReflectionAttributeHelper;
+use Roave\BetterReflection\Reflection\ReflectionAttribute;
 use Roave\BetterReflection\Reflector\Reflector as ReflectorInterface;
 use Sicet7\HTTP\Attributes\Middleware;
 use Sicet7\HTTP\Attributes\Route;
@@ -50,7 +50,13 @@ final readonly class HTTPAttributeLoader implements PluginInterface
                 }
 
                 //collect routes
-                $routeAttributes = ReflectionAttributeHelper::filterAttributesByInstance($attributes, Route::class);
+                $routeAttributes = array_values(array_filter($attributes, static function (ReflectionAttribute $attribute): bool {
+                    $class = $attribute->getClass();
+
+                    return $class->getName() === Route::class ||
+                        $class->isSubclassOf(Route::class) ||
+                        $class->implementsInterface(Route::class);
+                }));
                 $routeClassName = $class->getName();
                 if (empty($routeAttributes)) {
                     continue;

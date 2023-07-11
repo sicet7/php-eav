@@ -12,7 +12,7 @@ use Sicet7\Database\Interfaces\ConnectionFactoryInterface;
 /**
  * @method object getNativeConnection()
  */
-final class ConnectionWrapper implements ConnectionInterface
+final class WrappedConnection implements ConnectionInterface
 {
     /**
      * @var ConnectionInterface|null
