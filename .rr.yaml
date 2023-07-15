@@ -51,4 +51,4 @@ logs:
     mode: production
     level: info
     encoding: json
-    output: stdout
+    output: stderr

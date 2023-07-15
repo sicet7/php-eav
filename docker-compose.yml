@@ -27,6 +27,7 @@ services:
         environment:
             RR_DEBUG: "true"
             RR_XDEBUG: 1
+            DATABASE_DSN: "pdo_mysql://eav:eav@database/eav_database"
         networks:
             - services
         depends_on:

@@ -33,9 +33,8 @@ final readonly class Events implements PluginInterface
         $listens = [];
         foreach ($this->reflector->reflectAllClasses() as $class) {
             foreach ($class->getAttributesByInstance(Listens::class) as $attribute) {
-                $attributeClass = $attribute->getClass();
-                $attributeClassName = $attribute->getName();
-                $args = $attributeClass->getArguments();
+                $attributeClassName = $attribute->getClass()->getName();
+                $args = $attribute->getArguments();
                 /** @var Listens $attributeInstance */
                 $attributeInstance = (empty($args) ? new $attributeClassName() : new $attributeClassName(...$args));
                 $listens[$attributeInstance->eventFqcn][] = $class->getName();
