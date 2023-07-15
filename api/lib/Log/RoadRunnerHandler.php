@@ -2,6 +2,7 @@
 
 namespace Sicet7\Log;
 
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -23,6 +24,11 @@ final class RoadRunnerHandler extends AbstractProcessingHandler
      */
     protected function write(LogRecord $record): void
     {
-        $this->rpc->call('Log', $record->formatted ?? '');
+        $this->rpc->call('app.Log', ((string) $record->formatted) ?? '');
+    }
+
+    protected function getDefaultFormatter(): FormatterInterface
+    {
+        return new RoadRunnerJsonFormatter();
     }
 }

@@ -2,11 +2,12 @@
 
 namespace Sicet7\HTTP\RequestAttributes;
 
-use Sicet7\HTTP\Abstracts\RequestAttribute;
+use Sicet7\Contracts\HTTP\RequestAttributeInterface;
+use Sicet7\HTTP\Traits\RequestAttributeTrait;
 
-class PathArguments extends RequestAttribute
+class PathArguments implements RequestAttributeInterface
 {
-    public const ATTRIBUTE_NAME = 'path-arguments';
+    use RequestAttributeTrait;
 
     public function __construct(public readonly array $values)
     {

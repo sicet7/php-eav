@@ -5,9 +5,11 @@ namespace App\Listeners;
 use Sicet7\Database\WrappedConnection;
 use Sicet7\Events\Attributes\Listens;
 use Sicet7\Events\Interfaces\EventListenerInterface;
+use Sicet7\Plugin\Attributes\Autowire;
 use Sicet7\Server\Events\PostDispatch;
 
 #[Listens(PostDispatch::class)]
+#[Autowire]
 readonly class CloseDatabaseConnection implements EventListenerInterface
 {
     /**

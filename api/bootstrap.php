@@ -6,14 +6,16 @@ use Roave\BetterReflection\Reflector\DefaultReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
-use Sicet7\Plugin\AutowireAttributeLoader;
-use Sicet7\Plugin\Console;
-use Sicet7\Plugin\Container\ContainerBuilder;
-use Sicet7\Plugin\Events;
-use Sicet7\Plugin\HTTP;
-use Sicet7\Plugin\HTTPAttributeLoader;
-use Sicet7\Plugin\PSR17;
-use Sicet7\Plugin\Server;
+use Sicet7\Console\ConsolePlugin;
+use Sicet7\Error\ErrorPlugin;
+use Sicet7\Events\EventsPlugin;
+use Sicet7\HTTP\HttpAttributeLoaderPlugin;
+use Sicet7\HTTP\HttpPlugin;
+use Sicet7\Log\LogPlugin;
+use Sicet7\Plugin\AutowireAttributeLoaderPlugin;
+use Sicet7\Plugin\Plugin;
+use Sicet7\PSR17\PSR17Plugin;
+use Sicet7\Server\ServerPlugin;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -31,15 +33,17 @@ $sourceLocator = new AggregateSourceLocator([
 //which reflector should be used to reflect over the application code.
 $sourceReflector = new DefaultReflector($sourceLocator);
 
-ContainerBuilder::load(new Events($sourceReflector));
-ContainerBuilder::load(new Server());
-ContainerBuilder::load(new PSR17());
-ContainerBuilder::load(new HTTP());
-ContainerBuilder::load(new AutowireAttributeLoader($sourceReflector));
-ContainerBuilder::load(new HttpAttributeLoader($sourceReflector));
+Plugin::load(new LogPlugin());
+Plugin::load(new ErrorPlugin());
+Plugin::load(new EventsPlugin($sourceReflector));
+Plugin::load(new ServerPlugin());
+Plugin::load(new PSR17Plugin());
+Plugin::load(new HttpPlugin());
+Plugin::load(new AutowireAttributeLoaderPlugin($sourceReflector));
+Plugin::load(new HttpAttributeLoaderPlugin($sourceReflector));
 
-ContainerBuilder::load(new Console(
-    Console::makeCommandMap($sourceReflector)
+Plugin::load(new ConsolePlugin(
+    ConsolePlugin::makeCommandMap($sourceReflector)
 ));
 
-ContainerBuilder::load(new App());
+Plugin::load(new App());

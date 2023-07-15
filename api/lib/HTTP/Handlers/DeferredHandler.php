@@ -8,7 +8,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\HTTP\Interfaces\HasIdentifierInterface;
+use Sicet7\Contracts\HTTP\HasIdentifierInterface;
 
 class DeferredHandler implements RequestHandlerInterface, HasIdentifierInterface
 {

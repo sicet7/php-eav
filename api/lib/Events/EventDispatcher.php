@@ -5,6 +5,7 @@ namespace Sicet7\Events;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
+use Sicet7\Events\Exceptions\ListenerExecutionException;
 use Sicet7\Events\Interfaces\EventListenerInterface;
 
 class EventDispatcher implements EventDispatcherInterface

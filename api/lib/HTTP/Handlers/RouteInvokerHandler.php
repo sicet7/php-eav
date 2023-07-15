@@ -5,10 +5,10 @@ namespace Sicet7\HTTP\Handlers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\HTTP\Interfaces\HandlerContainerInterface;
+use Sicet7\Contracts\HTTP\HandlerContainerInterface;
+use Sicet7\HTTP\Exceptions\HttpException;
 use Sicet7\HTTP\RequestAttributes\PathArguments;
 use Sicet7\HTTP\RequestAttributes\RoutingResult;
-use Sicet7\HTTP\Exceptions\HttpException;
 
 readonly class RouteInvokerHandler implements RequestHandlerInterface
 {
@@ -26,7 +26,7 @@ readonly class RouteInvokerHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $routingResult = RoutingResult::readAttribute($request)?->result;
+        $routingResult = RoutingResult::find($request)?->result;
         if ($routingResult === null) {
             throw new \RuntimeException('Routing was not performed before routing handler.');
         }

@@ -6,10 +6,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\HTTP\Handlers\MiddlewareHandler;
-use Sicet7\HTTP\Interfaces\HasIdentifierInterface;
-use Sicet7\HTTP\Interfaces\RouteInterface;
+use Sicet7\Contracts\HTTP\HasIdentifierInterface;
+use Sicet7\Contracts\HTTP\RouteInterface;
 use Sicet7\HTTP\Enums\Method;
+use Sicet7\HTTP\Handlers\MiddlewareHandler;
 
 class Route implements RouteInterface
 {

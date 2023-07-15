@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Sicet7\HTTP\Attributes\Get;
-use Sicet7\Plugin\Container\Attributes\Autowire;
+use Sicet7\Plugin\Attributes\Autowire;
 
 #[Autowire]
 #[Get('/api/test')]

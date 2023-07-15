@@ -4,14 +4,15 @@ namespace Sicet7\HTTP\RequestAttributes;
 
 use FastRoute\Dispatcher as DispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sicet7\HTTP\Abstracts\RequestAttribute;
+use Sicet7\Contracts\HTTP\RequestAttributeInterface;
 use Sicet7\HTTP\Exceptions\HttpMethodNotAllowedException;
 use Sicet7\HTTP\Exceptions\HttpNotFoundException;
 use Sicet7\HTTP\Structs\HttpFound;
+use Sicet7\HTTP\Traits\RequestAttributeTrait;
 
-class RoutingResult extends RequestAttribute
+class RoutingResult implements RequestAttributeInterface
 {
-    public const ATTRIBUTE_NAME = 'routing-result';
+    use RequestAttributeTrait;
 
     /**
      * @param DispatcherInterface $dispatcher

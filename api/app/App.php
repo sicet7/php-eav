@@ -4,30 +4,43 @@ namespace App;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Driver\Connection as DoctrineConnectionInterface;
+use Monolog\Logger;
 use Psr\Container\ContainerInterface;
+use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Contracts\Plugin\PluginInterface;
 use Sicet7\Database\ConnectionFactory;
 use Sicet7\Database\Interfaces\ConnectionFactoryInterface;
 use Sicet7\Database\WrappedConnection;
-use Sicet7\Plugin\Container\Interfaces\PluginInterface;
-use Sicet7\Plugin\Container\MutableDefinitionSourceHelper;
-use Doctrine\DBAL\Driver\Connection as DoctrineConnectionInterface;
 
 class App implements PluginInterface
 {
     /**
-     * @param MutableDefinitionSourceHelper $source
+     * @param MutableDefinitionSourceInterface $source
      * @return void
      */
-    public function register(MutableDefinitionSourceHelper $source): void
+    public function register(MutableDefinitionSourceInterface $source): void
     {
+        $this->registerLogging($source);
         $this->registerDatabase($source);
     }
 
     /**
-     * @param MutableDefinitionSourceHelper $source
+     * @param MutableDefinitionSourceInterface $source
      * @return void
      */
-    private function registerDatabase(MutableDefinitionSourceHelper $source): void
+    private function registerLogging(MutableDefinitionSourceInterface $source): void
+    {
+        $source->decorate(Logger::class, function (Logger $logger, ContainerInterface $container) {
+            return $logger;
+        });
+    }
+
+    /**
+     * @param MutableDefinitionSourceInterface $source
+     * @return void
+     */
+    private function registerDatabase(MutableDefinitionSourceInterface $source): void
     {
         $source->env('env.database.dsn', 'DATABASE_DSN');
         $source->factory(Configuration::class, function () {
