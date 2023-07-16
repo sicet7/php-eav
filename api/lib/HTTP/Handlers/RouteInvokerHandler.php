@@ -5,7 +5,7 @@ namespace Sicet7\HTTP\Handlers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\Contracts\HTTP\HandlerContainerInterface;
+use Sicet7\Base\HTTP\Interfaces\HandlerContainerInterface;
 use Sicet7\HTTP\Exceptions\HttpException;
 use Sicet7\HTTP\RequestAttributes\PathArguments;
 use Sicet7\HTTP\RequestAttributes\RoutingResult;

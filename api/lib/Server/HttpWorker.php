@@ -3,12 +3,12 @@
 namespace Sicet7\Server;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Sicet7\Base\Server\ThrowableToResponseConverterInterface;
 use Sicet7\Server\Events\InternalServerError;
 use Sicet7\Server\Events\PostDispatch;
 use Sicet7\Server\Events\PreDispatch;
@@ -22,7 +22,7 @@ final readonly class HttpWorker
     public function __construct(
         private RequestHandlerInterface $requestHandler,
         private PSR7WorkerInterface $PSR7Worker,
-        private ResponseFactoryInterface $responseFactory,
+        private ThrowableToResponseConverterInterface $throwableToResponseConverter,
         private ?LoggerInterface $logger = null,
         private ?EventDispatcherInterface $eventDispatcher = null,
     ) {
@@ -50,11 +50,13 @@ final readonly class HttpWorker
                         LogLevel::INFO,
                         'Termination request received'
                     );
-                    if (!$this->dispatch(new TerminateWorker())) {
-                        $this->internalServerErrorResponse();
+                    try {
+                        $this->eventDispatcher?->dispatch(new TerminateWorker());
+                        return 0;
+                    } catch (\Throwable $throwable) {
+                        $this->internalServerErrorResponse($throwable);
                         return 1;
                     }
-                    return 0;
                 }
 
                 $this->PSR7Worker->respond($this->handleRequest($request));
@@ -63,8 +65,6 @@ final readonly class HttpWorker
                 $this->internalServerErrorResponse($jsonException);
                 return 1;
             } catch (\Throwable $throwable) {
-                var_dump($throwable);
-                die;
                 $this->dispatch(new InternalServerError($throwable));
                 $this->internalServerErrorResponse($throwable);
                 return 1;
@@ -73,12 +73,12 @@ final readonly class HttpWorker
     }
 
     /**
-     * @param \Throwable|null $throwable
+     * @param \Throwable $throwable
      * @return ResponseInterface
      */
-    protected function createInternalServerErrorResponse(?\Throwable $throwable = null): ResponseInterface
+    private function createInternalServerErrorResponse(\Throwable $throwable): ResponseInterface
     {
-        return $this->responseFactory->createResponse(500, 'Internal Server Error');
+        return $this->throwableToResponseConverter->convert($throwable);
     }
 
     /**
@@ -111,7 +111,7 @@ final readonly class HttpWorker
         }
         $context = [];
         if ($throwable !== null) {
-            $context['throwable'] = $this->throwableToArray($throwable);
+            $context['throwable'] = $throwable;
         }
         $this->logger->log($level, $msg, $context);
     }
@@ -136,10 +136,10 @@ final readonly class HttpWorker
     }
 
     /**
-     * @param \Throwable|null $throwable
+     * @param \Throwable $throwable
      * @return void
      */
-    private function internalServerErrorResponse(?\Throwable $throwable = null): void
+    private function internalServerErrorResponse(\Throwable $throwable): void
     {
         try {
             $this->PSR7Worker->respond(
@@ -152,25 +152,5 @@ final readonly class HttpWorker
                 $throwable
             );
         }
-    }
-
-    /**
-     * @param \Throwable $throwable
-     * @param int $levels
-     * @return array
-     */
-    private function throwableToArray(\Throwable $throwable, int $levels = 3): array
-    {
-        $output = [
-            'message' => $throwable->getMessage(),
-            'code' => $throwable->getCode(),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
-            'trace' => $throwable->getTrace(),
-        ];
-        if ($throwable->getPrevious() instanceof \Throwable && $levels > 0) {
-            $output['previous'] = $this->throwableToArray($throwable->getPrevious(), $levels - 1);
-        }
-        return $output;
     }
 }

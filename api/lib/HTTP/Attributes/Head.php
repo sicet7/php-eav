@@ -2,7 +2,7 @@
 
 namespace Sicet7\HTTP\Attributes;
 
-use Sicet7\HTTP\Enums\Method;
+use Sicet7\Base\HTTP\Enums\Method;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 final class Head extends Route

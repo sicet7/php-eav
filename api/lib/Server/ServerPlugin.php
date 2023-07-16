@@ -7,8 +7,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
+use Sicet7\Base\Server\ThrowableToResponseConverterInterface;
 use Spiral\Goridge\Relay;
 use Spiral\Goridge\RelayInterface;
 use Spiral\Goridge\RPC\RPC;
@@ -65,30 +66,8 @@ final readonly class ServerPlugin implements PluginInterface
         $source->reference(WorkerInterface::class, RoadRunnerWorker::class);
         $source->autowire(PSR7Worker::class, PSR7Worker::class);
         $source->reference(PSR7WorkerInterface::class, PSR7Worker::class);
-        $source->factory(
-            HttpWorker::class,
-            function(
-                RequestHandlerInterface $requestHandler,
-                PSR7WorkerInterface $PSR7Worker,
-                ResponseFactoryInterface $responseFactory,
-                ContainerInterface $container
-            ): HttpWorker {
-                $logger = null;
-                $eventDispatcher = null;
-                if ($container->has(LoggerInterface::class)) {
-                    $logger = $container->get(LoggerInterface::class);
-                }
-                if ($container->has(EventDispatcherInterface::class)) {
-                    $eventDispatcher = $container->get(EventDispatcherInterface::class);
-                }
-                return new HttpWorker(
-                    $requestHandler,
-                    $PSR7Worker,
-                    $responseFactory,
-                    $logger,
-                    $eventDispatcher
-                );
-            }
-        );
+        $source->autowire(HttpWorker::class, HttpWorker::class);
+        $source->autowire(ThrowableToResponseConverter::class, ThrowableToResponseConverter::class);
+        $source->reference(ThrowableToResponseConverterInterface::class, ThrowableToResponseConverter::class);
     }
 }

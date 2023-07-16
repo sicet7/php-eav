@@ -1,6 +1,6 @@
 <?php
 
-namespace Sicet7\HTTP\Enums\Status;
+namespace Sicet7\Base\HTTP\Enums\Status;
 
 enum ServerError: int
 {

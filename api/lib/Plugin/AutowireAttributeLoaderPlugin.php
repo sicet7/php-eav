@@ -3,8 +3,8 @@
 namespace Sicet7\Plugin;
 
 use Roave\BetterReflection\Reflector\Reflector as ReflectorInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
 use Sicet7\Plugin\Attributes\Autowire;
 
 final readonly class AutowireAttributeLoaderPlugin implements PluginInterface

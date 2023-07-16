@@ -3,8 +3,8 @@
 namespace Sicet7\HTTP\Exceptions;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Sicet7\HTTP\Enums\Status\ClientError;
-use Sicet7\HTTP\Enums\Status\ServerError;
+use Sicet7\Base\HTTP\Enums\Status\ClientError;
+use Sicet7\Base\HTTP\Enums\Status\ServerError;
 
 abstract class HttpException extends \RuntimeException
 {

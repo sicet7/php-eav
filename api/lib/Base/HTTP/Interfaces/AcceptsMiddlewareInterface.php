@@ -1,6 +1,6 @@
 <?php
 
-namespace Sicet7\Contracts\HTTP;
+namespace Sicet7\Base\HTTP\Interfaces;
 
 use Psr\Http\Server\MiddlewareInterface;
 

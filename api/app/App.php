@@ -2,16 +2,17 @@
 
 namespace App;
 
+use App\Database\ConnectionFactory;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Driver\Connection as DoctrineConnectionInterface;
+use Monolog\ErrorHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
-use Sicet7\Database\ConnectionFactory;
+use Psr\Log\LoggerInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
+use Sicet7\Database\DatabasePlugin;
 use Sicet7\Database\Interfaces\ConnectionFactoryInterface;
-use Sicet7\Database\WrappedConnection;
 
 class App implements PluginInterface
 {
@@ -21,6 +22,7 @@ class App implements PluginInterface
      */
     public function register(MutableDefinitionSourceInterface $source): void
     {
+        $this->registerErrorHandling($source);
         $this->registerLogging($source);
         $this->registerDatabase($source);
     }
@@ -42,28 +44,21 @@ class App implements PluginInterface
      */
     private function registerDatabase(MutableDefinitionSourceInterface $source): void
     {
-        $source->env('env.database.dsn', 'DATABASE_DSN');
-        $source->factory(Configuration::class, function () {
-            return new Configuration();
+        $source->env(DatabasePlugin::DATABASE_DSN_KEY, 'DATABASE_DSN');
+    }
+
+    /**
+     * @param MutableDefinitionSourceInterface $source
+     * @return void
+     */
+    private function registerErrorHandling(MutableDefinitionSourceInterface $source): void
+    {
+        $source->decorate(ErrorHandler::class, function (ErrorHandler $handler, ContainerInterface $container) {
+            $handler->registerErrorHandler();
+            $handler->registerErrorHandler();
+            $handler->registerFatalHandler(null, 100);
+            $container->get(LoggerInterface::class)->info('Error Handler Registered!');
+            return $handler;
         });
-        $source->factory(EventManager::class, function () {
-            return new EventManager();
-        });
-        $source->factory(ConnectionFactory::class, function (
-            ContainerInterface $container,
-            Configuration $configuration,
-            EventManager $eventManager
-        ): ConnectionFactory {
-            return new ConnectionFactory(
-                $container->get('env.database.dsn'),
-                $configuration,
-                $eventManager
-            );
-        });
-        $source->reference(ConnectionFactoryInterface::class, ConnectionFactory::class);
-        $source->factory(WrappedConnection::class, function (ConnectionFactoryInterface $connectionFactory) {
-            return new WrappedConnection($connectionFactory);
-        });
-        $source->reference(DoctrineConnectionInterface::class, WrappedConnection::class);
     }
 }

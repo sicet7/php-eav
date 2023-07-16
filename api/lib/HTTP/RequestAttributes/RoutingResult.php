@@ -4,7 +4,7 @@ namespace Sicet7\HTTP\RequestAttributes;
 
 use FastRoute\Dispatcher as DispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Sicet7\Contracts\HTTP\RequestAttributeInterface;
+use Sicet7\Base\HTTP\Interfaces\RequestAttributeInterface;
 use Sicet7\HTTP\Exceptions\HttpMethodNotAllowedException;
 use Sicet7\HTTP\Exceptions\HttpNotFoundException;
 use Sicet7\HTTP\Structs\HttpFound;

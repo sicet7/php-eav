@@ -9,8 +9,8 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
 
 final readonly class PSR17Plugin implements PluginInterface
 {

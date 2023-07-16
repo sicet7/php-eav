@@ -1,6 +1,6 @@
 <?php
 
-namespace Sicet7\Contracts\Plugin;
+namespace Sicet7\Base\Plugin;
 
 use Psr\Container\ContainerInterface;
 

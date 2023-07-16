@@ -4,8 +4,8 @@ namespace Sicet7\Console;
 
 use Psr\Container\ContainerInterface;
 use Roave\BetterReflection\Reflector\Reflector as ReflectorInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

@@ -10,9 +10,9 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 use Invoker\ParameterResolver\DefaultValueResolver;
 use Invoker\ParameterResolver\ResolverChain;
 use Psr\Container\ContainerInterface;
-use Sicet7\Contracts\Plugin\BootablePluginInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\BootablePluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
 use Sicet7\Plugin\Factories\AutowireFactory;
 
 final class Plugin implements PluginInterface

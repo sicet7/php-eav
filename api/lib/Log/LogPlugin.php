@@ -5,8 +5,8 @@ namespace Sicet7\Log;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
-use Sicet7\Contracts\Plugin\PluginInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\PluginInterface;
 use Spiral\Goridge\RPC\RPCInterface;
 
 final readonly class LogPlugin implements PluginInterface

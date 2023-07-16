@@ -13,7 +13,7 @@ use DI\Definition\Reference;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\Definition\StringDefinition;
 use DI\Definition\ValueDefinition;
-use Sicet7\Contracts\Plugin\MutableDefinitionSourceInterface;
+use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
 use Sicet7\Plugin\Factories\AutowireFactory;
 
 final readonly class MutableDefinitionSourceHelper implements MutableDefinitionSourceInterface

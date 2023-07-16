@@ -1,9 +1,9 @@
 <?php
 
-namespace Sicet7\Contracts\HTTP;
+namespace Sicet7\Base\HTTP\Interfaces;
 
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\HTTP\Enums\Method;
+use Sicet7\Base\HTTP\Enums\Method;
 
 interface RouteInterface extends RequestHandlerInterface, HasIdentifierInterface, AcceptsMiddlewareInterface
 {

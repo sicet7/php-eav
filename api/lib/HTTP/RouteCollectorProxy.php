@@ -4,10 +4,10 @@ namespace Sicet7\HTTP;
 
 use FastRoute\RouteCollector as FastRouteRouteCollector;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\Contracts\HTTP\HandlerContainerInterface;
-use Sicet7\Contracts\HTTP\RouteCollectorInterface;
-use Sicet7\Contracts\HTTP\RouteInterface;
-use Sicet7\HTTP\Enums\Method;
+use Sicet7\Base\HTTP\Enums\Method;
+use Sicet7\Base\HTTP\Interfaces\HandlerContainerInterface;
+use Sicet7\Base\HTTP\Interfaces\RouteCollectorInterface;
+use Sicet7\Base\HTTP\Interfaces\RouteInterface;
 
 class RouteCollectorProxy implements HandlerContainerInterface, RouteCollectorInterface
 {

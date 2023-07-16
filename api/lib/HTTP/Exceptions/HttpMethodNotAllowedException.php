@@ -3,8 +3,7 @@
 namespace Sicet7\HTTP\Exceptions;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Sicet7\HTTP\Enums\Status\ClientError;
-use Sicet7\HTTP\Exceptions\HttpException;
+use Sicet7\Base\HTTP\Enums\Status\ClientError;
 
 class HttpMethodNotAllowedException extends HttpException
 {

@@ -15,6 +15,7 @@ class RoadRunnerJsonFormatter extends JsonFormatter
     ) {
         parent::__construct(self::BATCH_MODE_NEWLINES, true, true, $includeStacktraces);
         $this->dateFormat = 'Uu000';
+        $this->setJsonPrettyPrint(false);
     }
 
     protected function normalizeRecord(LogRecord $record): array
@@ -49,7 +50,7 @@ class RoadRunnerJsonFormatter extends JsonFormatter
             unset($data['channel']);
         }
 
-        return $this->normalize($data, 3);
+        return $this->normalize($data);
     }
 
     protected function normalize(mixed $data, int $depth = 0): mixed

@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Sicet7\Contracts\HTTP\AcceptsMiddlewareInterface;
+use Sicet7\Base\HTTP\Interfaces\AcceptsMiddlewareInterface;
 
 class MiddlewareStackHandler implements RequestHandlerInterface, AcceptsMiddlewareInterface
 {

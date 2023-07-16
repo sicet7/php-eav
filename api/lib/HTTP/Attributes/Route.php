@@ -3,8 +3,8 @@
 namespace Sicet7\HTTP\Attributes;
 
 use Psr\Container\ContainerInterface;
+use Sicet7\Base\HTTP\Enums\Method;
 use Sicet7\HTTP\Handlers\DeferredHandler;
-use Sicet7\HTTP\Enums\Method;
 use Sicet7\HTTP\Structs\Route as RouteStruct;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
