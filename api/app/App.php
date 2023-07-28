@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Database\ConnectionFactory;
-use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Configuration;
 use Monolog\ErrorHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
@@ -12,7 +9,6 @@ use Psr\Log\LoggerInterface;
 use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
 use Sicet7\Base\Plugin\PluginInterface;
 use Sicet7\Database\DatabasePlugin;
-use Sicet7\Database\Interfaces\ConnectionFactoryInterface;
 
 class App implements PluginInterface
 {
@@ -34,6 +30,7 @@ class App implements PluginInterface
     private function registerLogging(MutableDefinitionSourceInterface $source): void
     {
         $source->decorate(Logger::class, function (Logger $logger, ContainerInterface $container) {
+            //TODO: register other logging handlers here.
             return $logger;
         });
     }
