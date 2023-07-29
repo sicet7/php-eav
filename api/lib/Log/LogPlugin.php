@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
 use Sicet7\Base\Plugin\PluginInterface;
 use Spiral\Goridge\RPC\RPCInterface;
+use Spiral\RoadRunner\EnvironmentInterface;
 
 final readonly class LogPlugin implements PluginInterface
 {
@@ -17,12 +18,14 @@ final readonly class LogPlugin implements PluginInterface
      */
     public function register(MutableDefinitionSourceInterface $source): void
     {
-        $source->factory(Logger::class, function (ContainerInterface $container) {
+        $source->factory(Logger::class, function (EnvironmentInterface $environment, ContainerInterface $container) {
             $logger = new Logger('app');
-            try {
-                $logger->pushHandler($container->get(RoadRunnerHandler::class));
-            } catch (\Throwable) {
-                // Do nothing
+            if ($environment->getMode() !== '') {
+                try {
+                    $logger->pushHandler($container->get(RoadRunnerHandler::class));
+                } catch (\Throwable) {
+                    // Do nothing
+                }
             }
             return $logger;
         });

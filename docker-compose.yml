@@ -40,6 +40,7 @@ services:
             - ./composer.json:/app/composer.json
             - ./composer.lock:/app/composer.lock
             - ./api:/app/api
+            - ./eav:/app/eav
         labels:
             - "traefik.enable=true"
             - "traefik.docker.network=services"

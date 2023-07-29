@@ -41,7 +41,7 @@ class App implements PluginInterface
      */
     private function registerDatabase(MutableDefinitionSourceInterface $source): void
     {
-        $source->env(DatabasePlugin::DATABASE_DSN_KEY, 'DATABASE_DSN');
+        $source->env(DatabasePlugin::DSN_KEY, 'DATABASE_DSN');
     }
 
     /**
