@@ -36,7 +36,6 @@ final readonly class ORMPlugin implements PluginInterface, BootablePluginInterfa
             $paths = [];
             $isDevMode = false;
             $proxyDir = null;
-            $cache = null;
 
             if ($container->has(self::PATHS_KEY) && is_array($container->get(self::PATHS_KEY))) {
                 $paths = $container->get(self::PATHS_KEY);
