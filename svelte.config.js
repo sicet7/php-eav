@@ -5,20 +5,20 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
-	preprocess: vitePreprocess(),
+	preprocess: [vitePreprocess()],
 	kit: {
-		appDir: "svelte",
+		appDir: 'svelte',
 		files: {
-			assets: "app/static",
-			lib: "app/lib",
-			params: "app/params",
-			routes: "app/routes",
-			serviceWorker: "app/service-worker",
-			appTemplate: "app/app.html",
-			errorTemplate: "app/error.html",
+			assets: 'app/static',
+			lib: 'app/lib',
+			params: 'app/params',
+			routes: 'app/routes',
+			serviceWorker: 'app/service-worker',
+			appTemplate: 'app/app.html',
+			errorTemplate: 'app/error.html',
 			hooks: {
-				client: "app/hooks.client",
-				server: "app/hooks.server"
+				client: 'app/hooks.client',
+				server: 'app/hooks.server'
 			}
 		},
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
