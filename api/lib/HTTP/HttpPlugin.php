@@ -17,6 +17,7 @@ use Sicet7\Base\Plugin\MutableDefinitionSourceInterface;
 use Sicet7\Base\Plugin\PluginInterface;
 use Sicet7\HTTP\Handlers\MiddlewareStackHandler;
 use Sicet7\HTTP\Handlers\RouteInvokerHandler;
+use Sicet7\HTTP\Middlewares\BodyParsingMiddleware;
 use Sicet7\HTTP\Middlewares\FastRouteDispatcherMiddleware;
 
 final readonly class HttpPlugin implements PluginInterface
@@ -86,7 +87,8 @@ final readonly class HttpPlugin implements PluginInterface
         );
         $source->reference(DispatcherInterface::class, GroupCountBasedDispatcher::class);
 
-        //FastRouteDispatcherMiddleware
+        //Middleware
         $source->autowire(FastRouteDispatcherMiddleware::class, FastRouteDispatcherMiddleware::class);
+        $source->autowire(BodyParsingMiddleware::class, BodyParsingMiddleware::class);
     }
 }
